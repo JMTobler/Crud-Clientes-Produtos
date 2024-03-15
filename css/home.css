@@ -1,0 +1,74 @@
+/* Estilizando o cabeçalho */
+.header-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Estilizando o logotipo */
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilizando a mensagem do cabeçalho */
+.Header-message {
+    text-align: center;
+    flex-grow: 1; 
+}
+
+/* Estilizando o botão de logout */
+.header-logout {
+    display: flex;
+    align-items: center;
+}
+
+#btn-logout {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+#btn-logout:hover {
+    transform: scale(1.3);
+}
+
+/* Estilizando o menu-box */
+.menu-box {
+    text-align: center; 
+    margin-top: 20px;
+}
+
+/* Estilizando a mensagem de boas-vindas */
+.welcome-message {
+    margin-bottom: 20px;
+}
+
+.welcome-message  h1{
+    font-weight: 700;
+}
+
+/* Estilizando os botões do menu-home */
+.menu-home button {
+    margin: 5px;
+}
+
+.btn-primary{
+    font-weight: 700;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: 0px transparent var(--primary-color);
+}
+
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    color: #000;
+    border: 3px solid black;
+}
+
+.material-symbols-outlined {
+    color: #fff;
+}

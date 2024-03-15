@@ -1,0 +1,57 @@
+/* Estilizando o cabeçalho */
+.header-cliente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Estilizando o logotipo */
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilizando a mensagem do cabeçalho */
+.Header-message {
+    text-align: center;
+    flex-grow: 1; 
+}
+
+/* Estilizando o botão de logout */
+.header-voltar {
+    display: flex;
+    align-items: center;
+}
+
+#btn-voltar {
+    text-align: center;
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+}
+
+#btn-voltar:hover {
+    transform: scale(1.3);
+}
+
+.container {
+    margin-top: 20px;
+}
+
+#btn-adicionar {
+    text-align: center;
+    background-color: #fff;
+    color: var(--primary-color);
+    border: none;
+}
+
+#btn-adicionar:hover {
+    background-color: var(--secondary-color);
+}
+
+.modal-dialog {
+    max-width: 780px;
+}

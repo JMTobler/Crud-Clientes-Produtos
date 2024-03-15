@@ -1,0 +1,65 @@
+.login-box {
+    width: 250px;
+    height: auto;
+    margin: auto;
+    border: 2px solid #ddd;
+    padding: 20px;
+    margin-top: 70px;
+}
+
+.login-title {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.login-element {
+    margin-top: 15px;
+}
+
+.esqueci-senha {
+    text-align: end;
+    font-style: italic;
+    margin-top: 3px;
+}
+
+.esqueci-senha a {
+    text-decoration: none;
+    color: var(--primary-color);   
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.esqueci-senha a:hover {
+    text-decoration: underline;
+}
+
+label {
+    font-size: 14px;
+}
+
+input, #btn-login {
+    width: 100%;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+}
+
+#btn-login {
+    margin-top: 10px;
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+}
+
+#btn-login:hover {
+    background-color: var(--secondary-color);
+    cursor: pointer;
+}
+
+#loading {
+    display: none;
+}
