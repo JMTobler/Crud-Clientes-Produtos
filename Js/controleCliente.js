@@ -5,7 +5,10 @@ let btnAdicionar = document.querySelector('#btn-adicionar');
 let tabelaCliente = document.querySelector('table>tbody');
 let modalCliente = new bootstrap.Modal(document.getElementById('modal-cliente'));
 
+let modoEdicao = false;
+
 let formModal = {
+    titulo: document.querySelector('h4.modal-title'),
     id: document.querySelector("#id"),
     nome: document.querySelector("#nome"),
     email: document.querySelector("#email"),
@@ -17,6 +20,9 @@ let formModal = {
 };
 
 btnAdicionar.addEventListener('click', () => {
+    modoEdicao = false;
+    formModal.titulo.textContent = "Cadastro de Clientes";
+    
     limparModalCliente();
     modalCliente.show();
 })
@@ -93,7 +99,11 @@ formModal.btnSalvar.addEventListener('click', () => {
         return;
     }
     
-    adicionarCliente(cliente);
+    if(modoEdicao){
+        atualizarClienteNoBackend(cliente);
+    }else{
+        adicionarClienteNoBackend(cliente);
+    }
 });
 
 function obterClienteModal(){
@@ -128,7 +138,12 @@ function adicionarCliente(cliente) {
 
         modalCliente.hide();
 
-        alert(`Cliente ${cliente.nome}, foi cadastrado com sucesso!`)
+        Swal.fire({
+            icon: 'success',
+            title: `Cliente ${cliente.nome}, foi cadastrado com sucesso!`,
+            showConfirmButton: false,
+            timer: 6000
+        });
     })
 }
 
@@ -166,4 +181,57 @@ function removerClienteLista(id) {
     let indice = listaClientes.findIndex(cliente => cliente.id == id);
 
     listaClientes.splice(indice, 1);
+}
+
+function editarCliente(id){
+    modoEdicao = true;
+    formModal.titulo.textContent = "Editar Cliente";
+
+    let cliente = listaClientes.find(c => c.id == id);
+
+    atualizarModalCliente(cliente);
+
+    modalCliente.show();
+}
+
+function atualizarModalCliente(cliente){
+    formModal.id.value = cliente.id;
+    formModal.nome.value = cliente.nome;
+    formModal.cpfOuCnpj.value = cliente.cpfOuCnpj;
+    formModal.email.value = cliente.email;
+    formModal.telefone.value =  cliente.telefone;
+    formModal.dataCadastro.value = cliente.dataCadastro.substring(0,10);
+}
+
+function atualizarClienteNoBackend(cliente){
+
+    fetch(`${URL}/${cliente.id}`, {
+        method: "PUT",
+        headers: {
+            Authorization: obterToken(),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(cliente)
+    })
+    .then(() => {
+
+        atualizarClienteNaTabela(cliente);
+
+        Swal.fire({
+            icon: 'success',
+            title: `Cliente atualizado com sucesso!`,
+            showConfirmButton: false,
+            timer: 6000
+        }) 
+
+        modalCliente.hide();
+    })
+}
+
+function atualizarClienteNaTabela(cliente){
+    let indice = listaClientes.findIndex(c => c.id == cliente.id);
+
+    listaClientes.splice(indice, 1, cliente);
+
+    popularTabela(listaClientes);
 }

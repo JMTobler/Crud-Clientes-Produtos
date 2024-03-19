@@ -5,7 +5,10 @@ let btnAdicionar = document.querySelector('#btn-adicionar');
 let tabelaProduto = document.querySelector('table>tbody');
 let modalProduto = new bootstrap.Modal(document.getElementById('modal-produto'))
 
+let modoEdicao = false;
+
 let formModal = {
+    titulo: document.querySelector("h4.modal-title"),
     id: document.querySelector("#id"),
     nome: document.querySelector("#nome"),
     valor: document.querySelector("#valor"),
@@ -17,6 +20,9 @@ let formModal = {
 };
 
 btnAdicionar.addEventListener('click', () => {
+    modoEdicao = false;
+    formModal.titulo.textContent = "Cadastro de Produtos";
+
     limparModalProduto();
     modalProduto.show();
 })
@@ -66,7 +72,7 @@ function criarLinhaTabela(produto) {
     tdEstoque.textContent = produto.quantidadeEstoque;
     tdObservacao.textContent = produto.observacao;
     tdDataCadastro.textContent = new Date(produto.dataCadastro).toLocaleDateString();
-    tdAcoes.innerHTML = `<button onclick="editarCliente(${produto.id})" class="btn btn-outline-primary btn-sm mr-3">
+    tdAcoes.innerHTML = `<button onclick="editarProduto(${produto.id})" class="btn btn-outline-primary btn-sm mr-3">
                                 Editar
                             </button>
                             <button onclick="excluirProduto(${produto.id})" class="btn btn-outline-primary btn-sm mr-3">
@@ -93,7 +99,11 @@ formModal.btnSalvar.addEventListener('click', () => {
         return;
     }
     
-    adicionarProduto(produto);
+    if(modoEdicao) {
+        atualizarProduto(produto);
+    }else {
+        adicionarProduto(produto);
+    } 
 });
 
 function obterProdutoModal(){
@@ -128,7 +138,12 @@ function adicionarProduto(produto) {
 
         modalProduto.hide();
 
-        alert(`Produto ${produto.nome}, foi cadastrado com sucesso!`)
+        Swal.fire({
+            icon: 'success',
+            title: `produto ${produto.nome}, foi cadastrado com sucesso!`,
+            showConfirmButton: false,
+            timer: 6000
+        }) 
     })
 }
 
@@ -166,4 +181,56 @@ function removerProdutoLista(id) {
     let indice = listaProdutos.findIndex(produto => produto.id == id);
 
     listaProdutos.splice(indice, 1);
+}
+
+function editarProduto(id) {
+    modoEdicao = true;
+    formModal.titulo.textContent = "Atulizar Produto";
+
+    let produto = listaProdutos.find(p => p.id == id);
+
+    atualizarModalProduto(produto);
+
+    modalProduto.show();
+}
+
+function atualizarModalProduto(produto) {
+    formModal.id.value = produto.id;
+    formModal.nome.value = produto.nome;
+    formModal.valor.value = produto.valor;
+    formModal.quantidadeEstoque.value = produto.quantidadeEstoque;
+    formModal.observacao.value = produto.observacao;
+    formModal.dataCadastro.value = produto.dataCadastro.substring(0,10);
+}
+
+function atualizarProduto(produto) {
+
+    fetch(`${URL}/${produto.id}`, {
+        method: "PUT",
+        headers: {
+            Authorization: obterToken(),
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produto)
+    })
+    .then(() => {
+        atualizarProdutoNaTabela(produto);
+
+        Swal.fire({
+            icon: 'success',
+            title: `Produto atualizado com sucesso!`,
+            showConfirmButton: false,
+            timer: 6000
+        });
+
+        modalProduto.hide();
+    })
+}
+
+function atualizarProdutoNaTabela(produto) {
+    let indice = listaProdutos.findIndex(p => p.id == produto.id);
+
+    listaProdutos.splice(indice, 1, produto);
+
+    popularTabela(listaProdutos);
 }
